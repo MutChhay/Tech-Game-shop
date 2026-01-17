@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "859650448420",
+    "project_id": "computerstore-8ce80",
+    "storage_bucket": "computerstore-8ce80.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859650448420:android:6342a51d061754267e0cb1",
+        "android_client_info": {
+          "package_name": "com.example.flutter_store_ui"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCKB2b8dqSzvVkgelB_JiEMSeh50v9FTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
