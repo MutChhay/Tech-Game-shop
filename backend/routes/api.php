@@ -7,6 +7,22 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\WishlistController;
+use App\Http\Controllers\Api\AddressController;
+// use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
+// Route::get('/cloudinary-test', function () {
+//     $filePath = public_path('storage/products/4QoneaOJQJcGBm2WC5NzQBv02HIVCCJZzM04JESy.jpg');
+
+//     return Cloudinary::upload($filePath, ['folder' => 'products'])->getSecurePath();
+// });
+
+Route::get('/debug-cloudinary', function () {
+    return [
+        'cloudinary_config' => config('cloudinary'),
+        'env_url' => env('CLOUDINARY_URL'),
+    ];
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +70,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // FCM
     // Route::post('/save-fcm-token', [AuthController::class, 'saveFcmToken']);
+
+    // Addresses
+    Route::get('/addresses', [AddressController::class, 'index']);
+    Route::post('/addresses', [AddressController::class, 'store']);
+    
+
+    Route::put('/addresses/{address}', [AddressController::class, 'update']);
+    Route::delete('/addresses/{address}', [AddressController::class, 'destroy']);
+    Route::post('/addresses/{address}/default', [AddressController::class, 'setDefault']);
 });
 
 /*

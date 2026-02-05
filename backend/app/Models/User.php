@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
-
+use App\Models\Address;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -16,10 +16,15 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'fcm_token', 
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
+    public function addresses() {
+        return $this->hasMany(Address::class);
+    }
 }

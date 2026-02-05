@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../services/api.dart';
 import '../models/order.dart';
-import '../models/order_item.dart'; // ✅ Added missing import
 
 class OrderDetailsScreen extends StatefulWidget {
   final Order order;

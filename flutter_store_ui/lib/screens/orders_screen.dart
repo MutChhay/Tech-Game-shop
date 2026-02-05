@@ -3,7 +3,6 @@ import '../services/api.dart';
 import '../models/order.dart';
 import 'order_details_screen.dart';
 
-
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({super.key});
 
@@ -39,9 +38,10 @@ class OrdersScreen extends StatelessWidget {
     }
   }
 
-  // 📅 DATE FORMAT
-  String _formatDate(DateTime date) {
-    return "${date.day}/${date.month}/${date.year}";
+  // 📅 DATE FORMAT - FIXED ✅
+  String _formatDate(DateTime? date) {
+    if (date == null) return '—';
+    return "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
   }
 
   @override
@@ -178,7 +178,7 @@ class OrdersScreen extends StatelessWidget {
 
                       const SizedBox(height: 10),
 
-                      // 📅 DATE
+                      // 📅 DATE - FIXED ✅
                       Row(
                         children: [
                           const Icon(
@@ -187,13 +187,15 @@ class OrdersScreen extends StatelessWidget {
                             color: Colors.grey,
                           ),
                           const SizedBox(width: 6),
-                          // Text(
-                          //   _formatDate(order.createdAt),
-                          //   style: const TextStyle(
-                          //     color: Colors.grey,
-                          //     fontSize: 12,
-                          //   ),
-                          // ),
+                          Text(
+                            _formatDate(
+                              order.createdAt,
+                            ), // ✅ UNCOMMENTED & FIXED
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                          ),
                         ],
                       ),
 

@@ -63,7 +63,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
         // ✅ STATIC CATEGORY (add categoryId to Product model later)
         productCategory = Category(
-          id: widget.product.categoryId ?? 0,
+          id: widget.product.categoryId,
           name: 'Laptops',
         );
         loadingSpecs = false;

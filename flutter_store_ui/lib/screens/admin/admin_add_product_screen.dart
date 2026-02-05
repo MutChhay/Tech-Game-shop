@@ -30,7 +30,7 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen>
 
   // Categories
   List<Category> categories = [];
-  Category? selectedCategory;
+  List<Category> selectedCategories = [];
   bool loadingCategories = true;
 
   File? image;
@@ -108,10 +108,10 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen>
       return;
     }
 
-    if (selectedCategory == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Please select a category")));
+    if (selectedCategories.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select at least one category")),
+      );
       return;
     }
 
@@ -133,7 +133,7 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen>
             ? descCtrl.text.trim()
             : null,
         image: image!,
-        categoryId: selectedCategory!.id,
+        categoryId: selectedCategories.first.id,
         // 🔥 LAPTOP SPECS
         cpu: cpuCtrl.text.trim().isNotEmpty ? cpuCtrl.text.trim() : null,
         ram: ramCtrl.text.trim().isNotEmpty ? ramCtrl.text.trim() : null,
@@ -182,9 +182,9 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen>
       warrantyCtrl.clear();
       setState(() {
         image = null;
-        selectedCategory = null;
+        selectedCategories.clear();
       });
-      Navigator.pop(context);
+      Navigator.pop(context,true);
     } catch (e) {
       ScaffoldMessenger.of(
         context,
@@ -567,19 +567,14 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: Text(
-            "Category *",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey.shade700,
-            ),
-          ),
+        const Text(
+          "Categories *",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 12),
+
         Container(
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -592,70 +587,102 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen>
             ],
           ),
           child: loadingCategories
-              ? Container(
-                  height: 64,
-                  padding: const EdgeInsets.all(20),
-                  child: const Row(
-                    children: [
-                      SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                  children: [
+                    // 🔥 MAIN DROPDOWN
+                    DropdownButtonFormField<Category>(
+                      value: selectedCategories.isEmpty
+                          ? null
+                          : selectedCategories.first,
+                      hint: const Text("Select primary category"),
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        labelText: "Primary Category",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.indigo,
+                            width: 2,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
                       ),
-                      SizedBox(width: 16),
-                      Text("Loading categories..."),
-                    ],
-                  ),
-                )
-              : DropdownButtonFormField<Category>(
-                  value: selectedCategory,
-                  decoration: InputDecoration(
-                    prefixIcon: Container(
-                      margin: const EdgeInsets.all(12),
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.category,
-                        color: Colors.green,
-                        size: 24,
-                      ),
+                      items: categories.map((category) {
+                        return DropdownMenuItem<Category>(
+                          value: category,
+                          child: Text(category.name),
+                        );
+                      }).toList(),
+                      onChanged: (Category? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            if (!selectedCategories.contains(newValue)) {
+                              selectedCategories.add(newValue);
+                            }
+                          });
+                        }
+                      },
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 0,
-                    ),
-                  ),
-                  items: categories.map((category) {
-                    return DropdownMenuItem<Category>(
-                      value: category,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          category.name,
-                          style: const TextStyle(fontSize: 16),
+                    const SizedBox(height: 16),
+
+                    // 🔥 MULTI-SELECT CHIPS (Beautiful!)
+                    if (selectedCategories.isNotEmpty) ...[
+                      const Text(
+                        "Selected:",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (Category? category) {
-                    setState(() {
-                      selectedCategory = category;
-                    });
-                  },
+                      const SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: selectedCategories.map((category) {
+                          return FilterChip(
+                            label: Text(category.name),
+                            selected: true,
+                            onSelected: (_) {
+                              setState(() {
+                                selectedCategories.remove(category);
+                              });
+                            },
+                            selectedColor: Colors.indigo.shade100,
+                            checkmarkColor: Colors.indigo,
+                            backgroundColor: Colors.indigo.shade50,
+                            elevation: 2,
+                            shadowColor: Colors.indigo.withOpacity(0.3),
+                          );
+                        }).toList(),
+                      ),
+                    ] else
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          "No categories selected",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
         ),
       ],
     );
   }
+
 
   // 🖼 IMAGE UPLOAD
   Widget _buildImageUpload() {

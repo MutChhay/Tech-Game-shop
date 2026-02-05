@@ -23,10 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      final data = await Api.login(
-        emailCtrl.text.trim(),
-        passCtrl.text,
-      );
+      final data = await Api.login(emailCtrl.text.trim(), passCtrl.text);
 
       await Api.saveToken(data["token"]);
 
@@ -51,11 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF0F2027),
-              Color(0xFF203A43),
-              Color(0xFF2C5364),
-            ],
+            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
           ),
         ),
         child: Center(
@@ -64,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // 🔥 BRAND
                 const Text(
                   "Tech Store Game",
                   style: TextStyle(
@@ -77,15 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 6),
                 const Text(
                   "Upgrade your setup. Upgrade your life.",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white70,
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.white70),
                 ),
-
                 const SizedBox(height: 40),
-
-                // 📦 LOGIN CARD
                 Card(
                   elevation: 12,
                   color: Colors.white.withOpacity(0.96),
@@ -118,10 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 10),
-
-                        // ❓ FORGOT PASSWORD
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
@@ -129,14 +112,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                      "Forgot password feature coming soon"),
+                                    "Forgot password feature coming soon",
+                                  ),
                                 ),
                               );
                             },
                             child: const Text("Forgot password?"),
                           ),
                         ),
-
                         if (error != null)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
@@ -145,8 +128,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: const TextStyle(color: Colors.red),
                             ),
                           ),
-
-                        // 🔐 LOGIN BUTTON
                         SizedBox(
                           width: double.infinity,
                           height: 48,
@@ -160,22 +141,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             child: loading
                                 ? const CircularProgressIndicator(
-                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    color: Colors.white,
                                   )
                                 : const Text(
                                     "Login",
                                     style: TextStyle(
-                                      color: Color.fromARGB(255, 255, 255, 255),
+                                      color: Colors.white,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                           ),
                         ),
-
                         const SizedBox(height: 18),
-
-                        // ➖ DIVIDER
                         Row(
                           children: const [
                             Expanded(child: Divider()),
@@ -186,59 +164,32 @@ class _LoginScreenState extends State<LoginScreen> {
                             Expanded(child: Divider()),
                           ],
                         ),
-
                         const SizedBox(height: 18),
-
-                        // 🌐 SOCIAL LOGINS
                         SocialButton(
                           text: "Continue with Google",
                           icon: Icons.g_mobiledata,
                           color: Colors.redAccent,
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    "Google login not connected yet"),
-                              ),
-                            );
-                          },
+                          onTap: () {},
                         ),
                         const SizedBox(height: 12),
                         SocialButton(
                           text: "Continue with Facebook",
                           icon: Icons.facebook,
                           color: Colors.blue,
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    "Facebook login not connected yet"),
-                              ),
-                            );
-                          },
+                          onTap: () {},
                         ),
                         const SizedBox(height: 12),
                         SocialButton(
                           text: "Continue with Twitter",
                           icon: Icons.alternate_email,
                           color: Colors.lightBlue,
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    "Twitter login not connected yet"),
-                              ),
-                            );
-                          },
+                          onTap: () {},
                         ),
                       ],
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
-                // 📝 REGISTER
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -271,7 +222,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-// 🔘 SOCIAL BUTTON
 class SocialButton extends StatelessWidget {
   final String text;
   final IconData icon;

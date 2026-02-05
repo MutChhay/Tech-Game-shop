@@ -9,6 +9,7 @@ import '../models/product.dart';
 import '../models/cart_item.dart';
 import '../models/order.dart';
 import '../models/category.dart';
+import '../models/address.dart';
 
 class Api {
   static const String baseUrl = "http://10.0.2.2:8000/api";
@@ -38,7 +39,9 @@ class Api {
     return headers;
   }
 
-  static Future<String> _readMultipartBody(http.StreamedResponse response) async {
+  static Future<String> _readMultipartBody(
+    http.StreamedResponse response,
+  ) async {
     try {
       return await response.stream.bytesToString();
     } catch (_) {
@@ -55,7 +58,10 @@ class Api {
   ) async {
     final res = await http.post(
       Uri.parse("$baseUrl/register"),
-      headers: {"Content-Type": "application/json", "Accept": "application/json"},
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
       body: jsonEncode({"name": name, "email": email, "password": password}),
     );
 
@@ -71,7 +77,10 @@ class Api {
   ) async {
     final res = await http.post(
       Uri.parse("$baseUrl/login"),
-      headers: {"Content-Type": "application/json", "Accept": "application/json"},
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
       body: jsonEncode({"email": email, "password": password}),
     );
 
@@ -115,54 +124,17 @@ class Api {
     );
 
     if (res.statusCode != 200) {
-      throw Exception("Failed to load products (${res.statusCode}): ${res.body}");
+      throw Exception(
+        "Failed to load products (${res.statusCode}): ${res.body}",
+      );
     }
 
     final List data = jsonDecode(res.body);
     return data.map((e) => Product.fromJson(e)).toList();
   }
 
-  // static Future<void> addProduct({
-  //   required String name,
-  //   required double price,
-  //   required int stock,
-  //   String? description,
-  //   File? image,
-  //   required int categoryId, // ✅ REQUIRED
-  // }) async {
-  //   final token = await getToken();
-  //   if (token == null) throw Exception("No token, please login again");
 
-  //   final request = http.MultipartRequest(
-  //     "POST",
-  //     Uri.parse("$baseUrl/products"),
-  //   );
-
-  //   request.headers['Authorization'] = "Bearer $token";
-  //   request.headers['Accept'] = "application/json";
-
-  //   request.fields['name'] = name;
-  //   request.fields['price'] = price.toString();
-  //   request.fields['stock'] = stock.toString();
-  //   request.fields['category_id'] = categoryId.toString(); // ✅ FIXED
-
-  //   if (description != null && description.trim().isNotEmpty) {
-  //     request.fields['description'] = description.trim();
-  //   }
-
-  //   if (image != null) {
-  //     request.files.add(await http.MultipartFile.fromPath('image', image.path));
-  //   }
-
-  //   final response = await request.send();
-  //   final body = await _readMultipartBody(response);
-
-  //   if (response.statusCode != 201 && response.statusCode != 200) {
-  //     throw Exception("Add product failed (${response.statusCode}): $body");
-  //   }
-  // }
-
-static Future<void> addProduct({
+  static Future<void> addProduct({
     required String name,
     required double price,
     required int stock,
@@ -332,7 +304,9 @@ static Future<void> addProduct({
       final List data = jsonDecode(res.body);
       return data.map((e) => Category.fromJson(e)).toList();
     } else {
-      throw Exception("Failed to load categories (${res.statusCode}): ${res.body}");
+      throw Exception(
+        "Failed to load categories (${res.statusCode}): ${res.body}",
+      );
     }
   }
 
@@ -454,7 +428,7 @@ static Future<void> addProduct({
   }
 
   // ✅ FIXED: use /orders (admin middleware on backend)
-static Future<List<Order>> getAdminOrders() async {
+  static Future<List<Order>> getAdminOrders() async {
     try {
       print('🔗 Calling: $baseUrl/admin/orders');
       final res = await http.get(
@@ -479,9 +453,8 @@ static Future<List<Order>> getAdminOrders() async {
     }
   }
 
-
   // ================== WISHLIST ==================
-  
+
   static Future<void> toggleWishlist(int productId) async {
     final res = await http.post(
       Uri.parse("$baseUrl/wishlist/toggle"),
@@ -490,7 +463,9 @@ static Future<List<Order>> getAdminOrders() async {
     );
 
     if (res.statusCode >= 400) {
-      throw Exception("Toggle wishlist failed (${res.statusCode}): ${res.body}");
+      throw Exception(
+        "Toggle wishlist failed (${res.statusCode}): ${res.body}",
+      );
     }
   }
 
@@ -501,7 +476,9 @@ static Future<List<Order>> getAdminOrders() async {
     );
 
     if (res.statusCode != 200) {
-      throw Exception("Failed to load wishlist (${res.statusCode}): ${res.body}");
+      throw Exception(
+        "Failed to load wishlist (${res.statusCode}): ${res.body}",
+      );
     }
 
     final List data = jsonDecode(res.body);
@@ -515,7 +492,9 @@ static Future<List<Order>> getAdminOrders() async {
     );
 
     if (res.statusCode != 200) {
-      throw Exception("Failed to load wishlist ids (${res.statusCode}): ${res.body}");
+      throw Exception(
+        "Failed to load wishlist ids (${res.statusCode}): ${res.body}",
+      );
     }
 
     final List data = jsonDecode(res.body);
@@ -542,4 +521,69 @@ static Future<List<Order>> getAdminOrders() async {
       throw Exception("Save FCM failed (${res.statusCode}): ${res.body}");
     }
   }
+
+ static Future<List<Address>> getUserAddresses() async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/addresses'), // Fixed URL
+      headers: await _headers(auth: true), // ✅ ADDED AUTH
+    );
+
+    print('📡 Addresses API: ${response.statusCode}');
+    print('📄 Response: ${response.body}');
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load addresses: ${response.body}');
+    }
+
+    final List data = jsonDecode(response.body);
+    return data.map((json) => Address.fromJson(json)).toList();
+  }
+
+
+  // ✅ Add new address
+  static Future<void> addAddress(Map<String, dynamic> address) async {
+    final headers = await _headers(auth: true); // ✅ AUTH
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/addresses'),
+      headers: headers,
+      body: jsonEncode(address),
+    );
+
+    print('📡 Add Address: ${response.statusCode}');
+    print('📄 Response: ${response.body}');
+
+    if (response.statusCode != 201) {
+      throw Exception("Add address failed: ${response.body}");
+    }
+  }
+
+
+  
+
+  // ✅ Delete address by ID
+  static Future<void> deleteAddress(String id) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/addresses/$id'),
+      headers: await _headers(auth: true), // ✅ AUTH
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Delete failed: ${response.body}");
+    }
+  }
+
+  // ✅ Set address as default
+  static Future<void> setDefaultAddress(String id) async {
+    final response = await http.post(
+      // POST for Laravel route model binding
+      Uri.parse('$baseUrl/addresses/$id/set-default'),
+      headers: await _headers(auth: true), // ✅ AUTH
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Set default failed: ${response.body}");
+    }
+  }
+  
 }

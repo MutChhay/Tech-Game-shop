@@ -82,6 +82,8 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out']);
     }
 
+
+
     // ✅ Add this method at the end of the class
 //     public function saveFcmToken(Request $request)
 //     {
