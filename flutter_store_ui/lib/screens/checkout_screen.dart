@@ -4,6 +4,8 @@ import '../models/cart_item.dart';
 import '../services/api.dart';
 import '../state/cart_state.dart';
 import 'order_success_screen.dart';
+import 'addresses_screen.dart';
+import '../models/address.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});

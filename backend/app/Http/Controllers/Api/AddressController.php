@@ -11,7 +11,9 @@ class AddressController extends Controller
 {
     // List all user addresses
     public function index() {
-        return Auth::user()->addresses;
+        return response()->json([
+        'addresses' => Auth::user()->addresses
+        ]);
     }
 
     // Add address

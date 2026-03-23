@@ -13,6 +13,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final nameCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
+  final ConfirmpassCtrl = TextEditingController();
   String? error;
   bool loading = false;
 
@@ -27,6 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         nameCtrl.text.trim(),
         emailCtrl.text.trim(),
         passCtrl.text,
+        // ConfirmpassCtrl.text,
       );
 
       await Api.saveToken(data["token"]);
@@ -122,6 +124,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           obscureText: true,
                           decoration: InputDecoration(
                             labelText: "Password",
+                            prefixIcon: const Icon(Icons.lock),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        // 🔐 Confirm Password 
+                        TextField(
+                          controller: ConfirmpassCtrl,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "Confirm Password",
                             prefixIcon: const Icon(Icons.lock),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(14),

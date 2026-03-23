@@ -24,18 +24,26 @@ class Address {
   });
 
   factory Address.fromJson(Map<String, dynamic> json) {
-    return Address(
-      id: json['id'],
-      name: json['name'],
-      street: json['street'],
-      city: json['city'],
-      state: json['state'],
-      postalCode: json['postal_code'], // ✅ FIX
-      country: json['country'],
-      isDefault: json['is_default'] ?? false, // ✅ FIX
-      latitude: (json['lat'] ?? 0).toDouble(), // ✅ FIX
-      longitude: (json['lng'] ?? 0).toDouble(), // ✅ FIX
-    );
+    try {
+      return Address(
+        id: json['id'] ?? 0,
+        name: json['name'] ?? 'Unknown',
+        street: json['street'] ?? '',
+        city: json['city'] ?? '',
+        state: json['state'] ?? '',
+        postalCode: json['postal_code'] ?? '',
+        country: json['country'] ?? '',
+        isDefault: json['is_default'] == 1 || json['is_default'] == true,
+        latitude: json['lat'] == null
+            ? 0.0
+            : double.parse(json['lat'].toString()),
+        longitude: json['lng'] == null
+            ? 0.0
+            : double.parse(json['lng'].toString()),
+      );
+    } catch (e) {
+      print('❌ Error parsing address: $json, Error: $e');
+      rethrow;
+    }
   }
-
 }

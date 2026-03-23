@@ -524,20 +524,24 @@ class Api {
 
  static Future<List<Address>> getUserAddresses() async {
     final response = await http.get(
-      Uri.parse('$baseUrl/addresses'), // Fixed URL
-      headers: await _headers(auth: true), // ✅ ADDED AUTH
+      Uri.parse('$baseUrl/addresses'),
+      headers: await _headers(auth: true),
     );
 
     print('📡 Addresses API: ${response.statusCode}');
     print('📄 Response: ${response.body}');
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to load addresses: ${response.body}');
+      throw Exception('Failed to load addresses');
     }
 
-    final List data = jsonDecode(response.body);
-    return data.map((json) => Address.fromJson(json)).toList();
+    final decoded = jsonDecode(response.body);
+
+    final List data = decoded is List ? decoded : decoded['addresses'] ?? [];
+
+    return data.map((e) => Address.fromJson(e)).toList();
   }
+
 
 
   // ✅ Add new address
@@ -557,10 +561,6 @@ class Api {
       throw Exception("Add address failed: ${response.body}");
     }
   }
-
-
-  
-
   // ✅ Delete address by ID
   static Future<void> deleteAddress(String id) async {
     final response = await http.delete(

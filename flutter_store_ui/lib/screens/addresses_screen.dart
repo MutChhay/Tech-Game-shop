@@ -1,8 +1,8 @@
 // NEW FILE: lib/screens/addresses_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_store_ui/models/address.dart';
+import '../models/address.dart';
 import 'package:flutter_store_ui/services/api.dart';
-import 'addressesScreen.dart'; // Your map screen
+import 'AddaddressesScreen.dart'; // Your map screen
 
 class AddressesScreen extends StatefulWidget {
   const AddressesScreen({super.key});
@@ -38,6 +38,30 @@ class _AddressesScreenState extends State<AddressesScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
+          if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error, size: 80, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Error: ${snapshot.error}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14, color: Colors.red),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() => _loadAddresses());
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          }
+
           final addresses = snapshot.data ?? [];
 
           if (addresses.isEmpty) {
@@ -61,10 +85,9 @@ class _AddressesScreenState extends State<AddressesScreen> {
                         ),
                       );
                       if (result == true) {
-                        _loadAddresses(); // 🔄 REFRESH
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Address added!')),
-                        );
+                        setState(() {
+                          _loadAddresses();
+                        });
                       }
                     },
                     icon: const Icon(Icons.add),

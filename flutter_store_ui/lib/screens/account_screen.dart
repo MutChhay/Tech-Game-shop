@@ -6,6 +6,7 @@ import '../../state/theme_state.dart';
 import 'admin/admin_orders_screen.dart';
 import '../../models/address.dart';
 import 'addresses_screen.dart';
+import 'AddaddressesScreen.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -154,7 +155,7 @@ class _AccountScreenState extends State<AccountScreen> {
           children: [
             _heroProfileCard(),
             const SizedBox(height: 32),
-            if (isAdmin) ...[_adminStatsRow(), const SizedBox(height: 32)],
+            // if (isAdmin) ...[_adminStatsRow(), const SizedBox(height: 32)],
             sectionCard(
               title: "Account Information",
               icon: Icons.person_outline,
@@ -368,33 +369,33 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   // ==================== ADMIN ====================
-  Widget _adminStatsRow() {
-    return Row(
-      children: [
-        Expanded(
-          child: _statCard(
-            "Products",
-            "1,247",
-            Icons.inventory_2,
-            Colors.indigo,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _statCard("Orders", "89", Icons.shopping_cart, Colors.green),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _statCard(
-            "Revenue",
-            "\$24.7K",
-            Icons.attach_money,
-            Colors.orange,
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _adminStatsRow() {
+  //   return Row(
+  //     children: [
+  //       Expanded(
+  //         child: _statCard(
+  //           "Products",
+  //           "1,247",
+  //           Icons.inventory_2,
+  //           Colors.indigo,
+  //         ),
+  //       ),
+  //       const SizedBox(width: 16),
+  //       Expanded(
+  //         child: _statCard("Orders", "89", Icons.shopping_cart, Colors.green),
+  //       ),
+  //       const SizedBox(width: 16),
+  //       Expanded(
+  //         child: _statCard(
+  //           "Revenue",
+  //           "\$24.7K",
+  //           Icons.attach_money,
+  //           Colors.orange,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _statCard(String label, String value, IconData icon, Color color) {
     return Container(
@@ -799,7 +800,6 @@ class _AddressesSectionState extends State<AddressesSection> {
                         ),
                       );
                     }
-
                     return Column(
                       children: addresses
                           .map(
@@ -815,6 +815,8 @@ class _AddressesSectionState extends State<AddressesSection> {
                     );
                   },
                 ),
+
+                // Manage addresses buttons
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
                   onPressed: () async {
@@ -828,8 +830,33 @@ class _AddressesSectionState extends State<AddressesSection> {
                       setState(() => _loadAddresses());
                     }
                   },
-                  icon: const Icon(Icons.add_location_alt),
+                  icon: const Icon(Icons.manage_accounts),
                   label: const Text("Manage Addresses"),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 2,
+                  ),
+                ),
+
+                // add new address button location
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AddAddressScreen(),
+                      ),
+                    );
+                    if (result == true) {
+                      setState(() => _loadAddresses());
+                    }
+                  },
+                  icon: const Icon(Icons.add_location_alt),
+                  label: const Text("Add New Address"),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 52),
                     shape: RoundedRectangleBorder(

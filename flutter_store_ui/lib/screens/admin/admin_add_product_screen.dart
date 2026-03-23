@@ -363,9 +363,9 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen>
                         ),
                         const SizedBox(width: 16),
                         const Text(
-                          "💻 Laptop Specifications",
+                          " Laptop Specifications",
                           style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.black87,
                           ),
