@@ -1,0 +1,200 @@
+{
+    "nav": {
+        "home": "Home",
+        "products": "Products",
+        "about": "About",
+        "contact": "Contact",
+        "account": "Account",
+        "ordersReturns": "Orders & returns",
+        "login": "Login",
+        "myProfile": "My Profile",
+        "myData": "My Data",
+        "accessories": "Accessories",
+        "settings": "Settings",
+        "logout": "Logout",
+        "viewAllProducts": "All Products",
+        "computers": "Computers",
+        "laptops": "Laptops",
+        "audio": "Audio",
+        "speakers": "Speakers",
+        "headphones": "Headphones",
+        "networking": "Networking",
+        "storage": "Storage",
+        "components": "Components",
+        "Total": "Total"
+    },
+    "home": {
+        "backWE": "Welcome Back",
+        "title": "Welcome to our store ",
+        "description": "Find the best products for you",
+        "shopNow": "Shop Now"
+    },
+    "product": {
+        "price": "Price",
+        "stock": "Stock",
+        "Istock": "In Stock",
+        "Ostock": "Out of Stock",
+        "description": "Description",
+        "addToCart": "Add to Cart",
+        "buyNow": "Buy Now"
+    },
+    "account": {
+        "profile": "Profile",
+        "address": "Address",
+        "orders": "Orders",
+        "payments": "Payments",
+        "settings": "Settings",
+        "logout": "Logout"
+    },
+    "genericon": {
+        "title": "GeneriCon 2023.",
+        "description": "Find powerful computers, essential components, and accessories for work, gaming, and daily use",
+        "bookNow": "Book now"
+    },
+
+    "login": {
+        "Sign_in": "Sign in to your account",
+        "Content": "Continue building your setup.",
+        "Email": "Email address",
+        "Password": "Password",
+        "ForgotP": "Forgot password?",
+        "Remember": "Remember me",
+        "errorMessage": "errorMessage",
+        "Or": "or continue with ",
+        "google": " Continue with Google",
+        "NOAC": "Don't have an account?",
+        "SignUP": "Don 't have an account?"
+
+    },
+    "sign_up": {
+        "Name": "Name",
+        "CreateN": "Create your account",
+        "CFP": "Confirm Password",
+        "NCFP": "Passwords do not match",
+        "signin": "Already have an account?",
+        "agree": "I agree to",
+        "policy": "privacy policy & terms?"
+    },
+    "Products": {
+        "OurP": "Our Products",
+        "AllP": "products",
+        "Filter": "Filter",
+        "Search": "Search",
+        "SearchP": "Search products...",
+        "allCategories": "All categories",
+        "NoAPIProducts": "Product details were not response Please Login your account.",
+        "categories": {
+            "computers": "Computers",
+            "laptops": "Laptops",
+            "accessories": "Accessories",
+            "audio": "Audio",
+            "speakers": "Speakers",
+            "headphones": "Headphones",
+            "networking": "Networking",
+            "storage": "Storage",
+            "components": "Components"
+        },
+        "clearFilters": "Clear filters",
+        "loadError": "Unable to load products.",
+        "noProductsFound": "No products found",
+        "tryAnotherCategory": "Try another category or check back later.",
+        "exploreCollection": "Explore our",
+        "viewMore": "View More",
+        "noImage": "No image",
+        "inStock": "In Stock",
+        "outOfStock": "Out of Stock",
+        "other": "Other",
+        "price": "Price",
+        "view": "View",
+        "Warranty": "Warranty",
+        "SupportP": "Product Support"
+    },
+    "banner": {
+        "title": "Apple AirPods Max Wireless Over - Ear Headphones.",
+        "Ltitle": "Active Noise Cancelling, Transparency Mode, Spatial Audio, Digital Crownfor Volume Control.Bluetooth Headphonesfor iPhone "
+    },
+    "Order": {
+        "myorder": "My orders",
+        "tracktitle": "Track your purchases, review order details, and keep an eye on what is arriving next.",
+        "ordersP": "orders placed",
+        "Noproductsfound": "We could not load your orders",
+        "shopping": "Start shopping",
+        "View": "View details",
+        "history": "Your order history is empty",
+        "tittle": "Browse the catalog and your purchases will appear here once you place an order.",
+        "Placed": "Placed",
+        "orderdetails": "Order details",
+        "orderTracking": "Order tracking",
+        "isCancelled": "Your cancell is approved.",
+        "isCancellationRequested": "Cancellation request is waiting for admin approval.",
+        "Summary": "Summary",
+        "Delivery": "Delivery",
+        "Payment": "Payment",
+        "RequestCancellation": "Request cancellation",
+        "Thanks": "Thank you for your order",
+        "OrderSU": "Your order has been placed successfully.",
+        "PurchasedP": "Purchased products",
+        "ViewOD": "View order details"
+
+    },
+    "Purchase": {
+        "title": "Fast & Reliable Delivery Across. We Deliver Your Favorite Products Safely and Conveniently Right toYour Door. ",
+        "Deliver": "Deliver to:",
+        "ChooseLocation": "Choose your location",
+        "available": "available",
+        "Quantity": "Quantity",
+        "Seller": "Seller",
+        "replacement": "30-day refund / replacement",
+        "Returns": "Returns",
+        "Payment": "Payment",
+        "transactionS": "Secure transaction",
+        "ADDTL": "Add to List",
+        "conti": "បន្តទិញទំនិញ"
+
+
+    },
+    "Footer": {
+        "CallUS": "Call us",
+        "daily": "Monday to Saturday",
+        "weekly": "Weekend: 10am - 5pm",
+        "Services": "Services",
+        "Company": "Company",
+        "About": "About US",
+        "Contact": "Contact Us",
+        "Ship&del": "Shipping & Delivery",
+        "RTRF": "Returns & Refunds",
+        "Warranty": "Warranty"
+    },
+    "AboutUS": {
+        "Techno": "Technology made",
+        "simple": "simple in Cambodia.",
+        "content1": "We help people in Cambodia find the right computers, phones, andtechnology products for everyday life, study, and work.",
+        "who": "Who We Are",
+        "trusted": "Your trusted tech store in Cambodia ",
+        "Content2": "We are a Cambodia-based technology store offering computers, phones, accessories, and other digital products.Our goal is to make shopping for technology simple, convenient, and reliable for students, professionals, and families across the country ",
+        "Content3": "Whether you need a powerful computer for study or work, a new phone, or accessories for your setup, we help you discover products that match your needs and budget.",
+        "Technology": "Technology Products",
+        "onlineS": "Online Shopping",
+        "CustomerF": "Customer Focused",
+        "Experience": "Modern Experience",
+        "value": {
+            "T1": "What We Value",
+            "T2": "Built around our customers in Cambodia"
+        },
+        "Mission": {
+            "P1": "បេសកកម្មរបស់យើង",
+            "Content1": "ធ្វើឱ្យជម្រើសបច្ចេកវិទ្យាកាន់តែប្រសើរឡើងកាន់តែងាយស្រួលនៅក្នុងប្រទេសកម្ពុជា",
+            "content2": "យើងជឿជាក់ថាការទិញបច្ចេកវិទ្យាមិនគួរស្មុគស្មាញទេ។ យើងផ្តោតលើការផ្តល់ផលិតផលមានប្រយោជន៍ ព័ត៌មានច្បាស់លាស់ និងបទពិសោធន៍ទិញទំនិញសាមញ្ញ ដើម្បីឱ្យអតិថិជននៅក្នុងប្រទេសកម្ពុជាអាចទិញបានដោយទំនុកចិត្ត។"
+        },
+        "CTA": {
+            "P1": "Ready to find your next device in Cambodia?",
+            "Content1": "Explore our latest technology products."
+        },
+        "description1": "We focus on providing reliable technology products that customers in Cambodia can depend on.",
+        "Quality": "Quality",
+        "Simplicity": "Simplicity",
+        "description2": "We keep the shopping experience simple, clear, and easy to understand for everyone.",
+        "Customers": "Customers",
+        "description3": "Our customers in Cambodia are at the center of everything we build and improve."
+    }
+}

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import Login from '../components/views/login.vue'
-import Register from '../components/views/register.vue'
+import Login from '../components/Auth/login.vue'
+import Register from '../components/Auth/register.vue'
 
 defineProps(['isOpen'])
 const emit = defineEmits(['close'])
@@ -11,7 +11,7 @@ const showLogin = ref(true)
 
 <template>
   <Transition name="modal-fade">
-    <div v-if="isOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-hidden">
+    <div v-if="isOpen" class="fixed inset-0 z-100 flex items-center justify-center p-4 overflow-hidden">
       
       <div 
         class="absolute inset-0 bg-neutral-950/80 backdrop-blur-sm transition-opacity" 
@@ -33,6 +33,7 @@ const showLogin = ref(true)
             <Login 
               v-if="showLogin" 
               @open-register="showLogin = false"
+              @login-success="emit('close')"
             />
 
             <Register 

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    protected $appends = ['image_url'];
+
     protected $fillable = [
         'name',
         'price',
@@ -16,7 +18,7 @@ class Product extends Model
         'category_id',
         // 🔥 NEW FIELDS
         'cpu',
-        'ram', 
+        'ram',
         'storage',
         'gpu',
         'display',
@@ -32,5 +34,16 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class)->orderBy('sort_order');
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        $path = $this->images->first()?->image_path ?: $this->image;
+
+        return $path ? asset('storage/' . $path) : null;
+    }
+
 }
- 

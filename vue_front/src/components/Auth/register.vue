@@ -1,8 +1,13 @@
 <script setup>
 import { ref, computed } from "vue"
 import api from "../../services/api"
+import { useAuthStore } from "../../Store/Auth.js"
+import { useI18n } from 'vue-i18n'
 
+const { t, locale } = useI18n()
 const emit = defineEmits(['open-login'])
+const auth = useAuthStore()
+
 
 // Form state
 const name = ref("")
@@ -35,7 +40,7 @@ const register = async () => {
       password: password.value
     })
 
-    localStorage.setItem("token", res.data.token)
+    auth.login(res.data.token, res.data.user || null)
     alert("Register success")
 
     // 👉 switch back to login after success
@@ -47,7 +52,11 @@ const register = async () => {
     isLoading.value = false
   }
 }
+
 </script>
+
+
+<!-- Some of translate using letter from login can you to checck km.json to see -->
 
 <template>
    <div class="w-full max-w-sm mx-auto">
@@ -58,8 +67,8 @@ const register = async () => {
     </div>
     <!-- HEADER -->
     <div class="mb-6 text-center">
-      <h2 class="text-xl font-bold">Register</h2>
-      <p class="text-sm text-gray-500">Create your account</p>
+      <h2 class="text-xl font-bold">{{ t('sign_up.Name') }}</h2>
+      <p class="text-sm text-gray-500">{{ t('sign_up.CreateN') }}</p>
     </div>
 
     <!-- FORM -->
@@ -67,7 +76,7 @@ const register = async () => {
 
       <!-- NAME -->
       <div>
-        <label class="text-sm font-medium">Name</label>
+        <label class="text-sm font-medium">{{ t('sign_up.Name') }}</label>
         <input 
           v-model="name" 
           type="text" 
@@ -79,19 +88,24 @@ const register = async () => {
 
       <!-- EMAIL -->
       <div>
-        <label class="text-sm font-medium">Email</label>
+        <label class="text-sm font-medium">{{ t('login.Email') }}</label>
         <input 
           v-model="email" 
           type="email" 
+          pattern="[a-zA-Z0-9._%+-]+@gmail\.com$"
+          title="Please enter a valid Gmail address ending with .com"
           placeholder="name@company.com"
           class="input input-bordered w-full mt-1"
-          required
+          required:
         />
+        <p v-if="errorMessage" class="text-sm text-error mt-1">
+          {{ errorMessage }}
+        </p>
       </div>
 
       <!-- PASSWORD -->
       <div>
-        <label class="text-sm font-medium">Password</label>
+        <label class="text-sm font-medium">{{ t('login.Password') }}</label>
         <div class="relative mt-1">
           <input 
             v-model="password"
@@ -112,7 +126,7 @@ const register = async () => {
 
       <!-- CONFIRM PASSWORD -->
       <div>
-        <label class="text-sm font-medium">Confirm Password</label>
+        <label class="text-sm font-medium">{{ t('sign_up.CFP') }}</label>
         <div class="relative mt-1">
           <input 
             v-model="confirmPassword"
@@ -132,14 +146,14 @@ const register = async () => {
 
         <!-- ERROR -->
         <p v-if="!passwordsMatch" class="text-red-500 text-xs mt-1">
-          Passwords do not match
+          {{ t('sign_up.NCFP') }}
         </p>
       </div>
 
       <!-- TERMS -->
       <div class="flex items-center gap-2 text-sm">
         <input type="checkbox" class="checkbox checkbox-sm" required />
-        <label class="label-text text-base-content/80 p-0 text-base" for="policyagreement"> I agree to <a href="#" class="link link-animated link-primary font-normal">privacy policy & terms?</a> </label>
+        <label class="label-text text-base-content/80 p-0 text-base" for="policyagreement"> {{ t('sign_up.agree') }} <a href="#" class="link link-animated link-primary font-normal">{{ t('sign_up.policy') }}</a> </label>
       </div>
 
       <!-- BUTTON -->
@@ -156,13 +170,13 @@ const register = async () => {
 
     <!-- SWITCH TO LOGIN -->
     <p class="text-center text-sm mt-6">
-      Already have an account?
+     {{ t('sign_up.signin') }}
       <button 
         type="button"
         @click="$emit('open-login')"
         class="text-primary ml-1 font-medium"
       >
-        Login
+        {{ t('nav.login') }}
       </button>
     </p>
 

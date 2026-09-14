@@ -623,7 +623,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         );
-                      }).toList(),
+                      }),
                     ],
                   );
                 },
@@ -677,7 +677,7 @@ class PopularProductCard extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     height: 140,
                     width: double.infinity,
                     child: product.image != null
@@ -748,7 +748,7 @@ class PopularProductCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "\$${product.price?.toStringAsFixed(0) ?? '0'}",
+                          "\$${product.price.toStringAsFixed(0) ?? '0'}",
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -825,7 +825,7 @@ class RealisticProductCard extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     height: 140,
                     width: double.infinity,
                     child: product.image != null
@@ -906,7 +906,7 @@ class RealisticProductCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "\$${product.price?.toStringAsFixed(0) ?? '0'}",
+                            "\$${product.price.toStringAsFixed(0) ?? '0'}",
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

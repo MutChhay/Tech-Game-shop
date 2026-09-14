@@ -38,7 +38,7 @@ class AddressController extends Controller
         if ($address->user_id !== Auth::id()) abort(403);
 
         $validated = $request->validate([
-            'name' => 'string|max:50',
+            'name' => 'string|max:  50',
             'street' => 'string|max:255',
             'city' => 'string|max:100',
             'state' => 'string|max:100',

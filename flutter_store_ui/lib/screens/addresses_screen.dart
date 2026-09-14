@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../models/address.dart';
 import 'package:flutter_store_ui/services/api.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'AddaddressesScreen.dart'; // Your map screen
 
 class AddressesScreen extends StatefulWidget {
@@ -22,6 +23,23 @@ class _AddressesScreenState extends State<AddressesScreen> {
 
   void _loadAddresses() {
     _addressesFuture = Api.getUserAddresses();
+  }
+
+  Future<void> _openInGoogleMaps(Address address) async {
+    final query = address.latitude != 0.0 && address.longitude != 0.0
+        ? '${address.latitude},${address.longitude}'
+        : '${address.street}, ${address.city}, ${address.state}, ${address.country}';
+    final uri = Uri.https('www.google.com', '/maps/search/', {
+      'api': '1',
+      'query': query,
+    });
+
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication) &&
+        mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not open Google Maps')),
+      );
+    }
   }
 
   @override
@@ -125,6 +143,11 @@ class _AddressesScreenState extends State<AddressesScreen> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      IconButton(
+                        tooltip: 'Open in Google Maps',
+                        icon: const Icon(Icons.map, color: Colors.green),
+                        onPressed: () => _openInGoogleMaps(address),
+                      ),
                       IconButton(
                         icon: Icon(
                           Icons.star,

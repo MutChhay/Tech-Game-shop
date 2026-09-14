@@ -1,88 +1,661 @@
 <template>
-  <section class="relative min-h-[90vh] w-full overflow-hidden bg-neutral-950 flex items-center pt-20 lg:pt-0">
-    
-    <div class="absolute top-1/4 -left-20 size-[300px] md:size-[500px] rounded-full bg-primary/20 blur-[100px] md:blur-[120px]"></div>
-    <div class="absolute bottom-1/4 -right-20 size-[250px] md:size-[400px] rounded-full bg-secondary/10 blur-[80px] md:blur-[100px]"></div>
-    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none"></div>
+  <section class="slider-main">
+    <!-- Backgrounds -->
+    <div id="backgrounds">
+      <div
+        v-for="(background, index) in backgrounds"
+        :key="index"
+        class="background"
+        :style="{
+          background: background,
+          opacity: currentIndex === index ? 1 : 0
+        }"
+      ></div>
+    </div>
 
-    <div class="container mx-auto px-6 lg:px-12 z-10">
-      <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
-        
-        <div class="flex-1 text-center lg:text-left space-y-6 md:space-y-8 order-2 lg:order-1">
-          <div class="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[10px] md:text-xs font-bold tracking-widest text-primary backdrop-blur-md uppercase">
-            <span class="mr-2 inline-block size-2 animate-pulse rounded-full bg-primary shadow-[0_0_8px_#641ae6]"></span>
-            RTX 5090 SERIES NOW IN STOCK
-          </div>
+    <!-- Left Content -->
+    <div class="container">
+      <div class="logo">
+        <a href="#">
+          <img
+            src="https://www.yudiz.com/codepen/headphone-slider/logo.svg"
+            alt="logo"
+          />
+        </a>
+      </div>
 
-          <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black tracking-tighter text-white uppercase italic leading-[0.9]">
-            Unleash <br />
-            <span class="bg-gradient-to-r from-primary via-purple-500 to-secondary bg-clip-text text-transparent filter drop-shadow-sm">
-              Ultimate Power
-            </span>
-          </h1>
+      <div class="slider-content-wrap">
+        <div class="slider-content">
+          <h2 class="heading-style-2">
+            {{ t('banner.title') }}
+          </h2>
 
-          <p class="max-w-xl text-base md:text-lg text-white/50 leading-relaxed mx-auto lg:mx-0 font-medium">
-            Build your dream setup with the world's most powerful hardware. 
-            From custom water-cooled rigs to professional workstations.
+          <p>
+             {{ t('banner.Ltitle') }}
           </p>
 
-          <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4">
-            <button class="btn btn-primary btn-lg rounded-xl px-10 font-black uppercase tracking-wider shadow-[0_10px_20px_-5px_rgba(100,26,230,0.4)] hover:scale-105 active:scale-95 transition-all duration-300">
-              Shop Build Kits
-            </button>
-            <button class="btn btn-outline btn-lg rounded-xl px-10 text-white border-white/20 hover:bg-white/5 hover:border-white/40 transition-all">
-              PC Builder
-            </button>
-          </div>
+          <h3 class="heading-style-2">
+            $779.99
+          </h3>
 
-          <div class="flex justify-center lg:justify-start gap-10 pt-10 border-t border-white/10">
-            <div class="group">
-              <p class="text-3xl font-black text-white group-hover:text-primary transition-colors">2.5k+</p>
-              <p class="text-[10px] uppercase tracking-[0.3em] text-white/30">PC Built</p>
-            </div>
-            <div class="h-12 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
-            <div class="group">
-              <p class="text-3xl font-black text-white group-hover:text-secondary transition-colors">24h</p>
-              <p class="text-[10px] uppercase tracking-[0.3em] text-white/30">Support</p>
-            </div>
+          <div class="social-icons">
+            <a href="#">
+              <img
+                src="https://www.yudiz.com/codepen/headphone-slider/instagram-icon.svg"
+                alt="Instagram"
+              />
+            </a>
+
+            <a href="#">
+              <img
+                src="https://www.yudiz.com/codepen/headphone-slider/facbook-icon.svg"
+                alt="Facebook"
+              />
+            </a>
+
+            <a href="#">
+              <img
+                src="https://www.yudiz.com/codepen/headphone-slider/twiter-icon.svg"
+                alt="Twitter"
+              />
+            </a>
           </div>
         </div>
-
-        <div class="flex-1 relative group order-1 lg:order-2 w-full max-w-[500px] lg:max-w-none">
-          <div class="absolute inset-0 bg-primary/20 blur-[60px] md:blur-[100px] rounded-full scale-90 group-hover:scale-110 transition-transform duration-1000"></div>
-          
-          <img 
-            src="../../assets/images/image.png" 
-            alt="Gaming PC Case" 
-            class="relative z-10 w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] animate-float drop-shadow-primary"
-          />
-        </div>
-
       </div>
     </div>
 
-    <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-neutral-950 to-transparent"></div>
+    <!-- Slider Images -->
+    <div class="slider-images">
+      <img
+        v-for="(image, index) in images"
+        :key="index"
+        :src="image"
+        alt="headphone image"
+        class="slider-image"
+        :class="getImageClass(index)"
+      />
+    </div>
   </section>
 </template>
 
-<style scoped>
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-25px) rotate(1deg); }
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+/*
+|--------------------------------------------------------------------------
+| Images
+|--------------------------------------------------------------------------
+*/
+
+const images = [
+  'https://www.yudiz.com/codepen/headphone-slider/green.png',
+  'https://www.yudiz.com/codepen/headphone-slider/blue.png',
+  'https://www.yudiz.com/codepen/headphone-slider/red.png',
+  'https://www.yudiz.com/codepen/headphone-slider/white.png',
+  'https://www.yudiz.com/codepen/headphone-slider/black.png'
+]
+
+/*
+|--------------------------------------------------------------------------
+| Background colors
+|--------------------------------------------------------------------------
+*/
+
+const backgrounds = [
+  'radial-gradient(50% 50% at 50% 50%, #C7F6D0 0%, #7CB686 92.19%)',
+
+  'radial-gradient(50% 50% at 50% 50%, #D1E4F6 0%, #5F9CCF 100%)',
+
+  'radial-gradient(50% 50% at 50% 50%, #FFB7B2 0%, #ED746E 100%)',
+
+  'radial-gradient(50% 50% at 50% 50%, #D7D7D7 0%, #979797 100%)',
+
+  'radial-gradient(50% 50% at 50% 50%, #6B6B6B 0%, #292929 100%)'
+]
+
+/*
+|--------------------------------------------------------------------------
+| Current slider
+|--------------------------------------------------------------------------
+*/
+
+const currentIndex = ref(0)
+
+let sliderInterval = null
+
+/*
+|--------------------------------------------------------------------------
+| Get image class
+|--------------------------------------------------------------------------
+*/
+
+const getImageClass = (index) => {
+  const total = images.length
+
+  const previousIndex =
+    (currentIndex.value - 1 + total) % total
+
+  const nextIndex =
+    (currentIndex.value + 1) % total
+
+  if (index === currentIndex.value) {
+    return 'active'
+  }
+
+  if (index === previousIndex) {
+    return 'previous'
+  }
+
+  if (index === nextIndex) {
+    return 'next'
+  }
+
+  return 'inactive'
 }
 
-.animate-float {
-  animation: float 7s ease-in-out infinite;
+/*
+|--------------------------------------------------------------------------
+| Next slide
+|--------------------------------------------------------------------------
+*/
+
+const nextSlide = () => {
+  currentIndex.value =
+    (currentIndex.value + 1) % images.length
 }
 
-/* Adds a subtle primary glow to the image itself */
-.drop-shadow-primary {
-  filter: drop-shadow(0 0 15px rgba(100, 26, 230, 0.2));
+/*
+|--------------------------------------------------------------------------
+| Start slider
+|--------------------------------------------------------------------------
+*/
+
+onMounted(() => {
+  sliderInterval = setInterval(() => {
+    nextSlide()
+  }, 3000)
+})
+
+/*
+|--------------------------------------------------------------------------
+| Stop slider when component is destroyed
+|--------------------------------------------------------------------------
+*/
+
+onUnmounted(() => {
+  clearInterval(sliderInterval)
+})
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap');
+
+/* =========================================================
+   RESET
+========================================================= */
+
+
+
+
+img {
+  user-select: none;
 }
 
-/* Custom font smoothing for dark backgrounds */
-h1, p {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+a {
+  display: inline-block;
+}
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.heading-style-2 {
+  color: #fff;
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 50px;
+  margin-bottom: 40px;
+}
+
+.p {
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px;
+  margin-bottom: 28px;
+}
+
+/* =========================================================
+   MAIN SLIDER
+========================================================= */
+
+.slider-main {
+  min-height: 600px;
+
+  background:
+    radial-gradient(
+      50% 50% at 50% 50%,
+      #c7f6d0 0%,
+      #7cb686 92.19%
+    );
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+
+  z-index: 1;
+}
+
+/* =========================================================
+   BACKGROUNDS
+========================================================= */
+
+#backgrounds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+
+  z-index: -1;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 2s ease-in-out;
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container {
+  position: relative;
+
+  left: calc(50% - (1140px / 2));
+
+  width: 50%;
+
+  padding-block: 100px;
+
+  max-width: 525px;
+
+  height: 100%;
+}
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo a {
+  margin-bottom: 20px;
+}
+
+.logo a img {
+  width: 271px;
+  height: auto;
+}
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.slider-content-wrap {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  height: 100%;
+}
+
+/* =========================================================
+   SOCIAL ICONS
+========================================================= */
+
+.social-icons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+}
+
+.social-icons a {
+  border: 2px solid #fff;
+
+  border-radius: 50%;
+
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.social-icons img {
+  width: 22px;
+  height: 22px;
+}
+
+/* =========================================================
+   SLIDER IMAGES
+========================================================= */
+
+.slider-images {
+  position: relative;
+
+  width: 50%;
+
+  height: 100%;
+
+  top: 0;
+}
+
+.slider-images > img {
+  position: absolute;
+
+  top: 0%;
+  left: 100%;
+
+  filter: blur(25px);
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.3);
+
+  transition:
+    opacity 2s ease,
+    transform 2s ease,
+    filter 2s ease,
+    left 2s ease,
+    top 2s ease;
+
+  object-fit: cover;
+
+  max-width: 593px;
+  max-height: 779px;
+
+  height: 100%;
+
+  min-height: 320px;
+}
+
+/* =========================================================
+   ACTIVE IMAGE
+========================================================= */
+
+.slider-images > img.active {
+  opacity: 1;
+
+  filter: blur(0px);
+
+  left: 0;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  z-index: 1;
+}
+
+/* =========================================================
+   NEXT IMAGE
+========================================================= */
+
+.slider-images > img.next {
+  opacity: 1;
+
+  filter: blur(35px);
+
+  left: 100%;
+
+  top: 10%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.3);
+}
+
+/* =========================================================
+   PREVIOUS IMAGE
+========================================================= */
+
+.slider-images > img.previous {
+  opacity: 1;
+
+  filter: blur(25px);
+
+  left: 95%;
+
+  top: 90%;
+}
+
+/* =========================================================
+   INACTIVE IMAGE
+========================================================= */
+
+.slider-images > img.inactive {
+  opacity: 0;
+
+  filter: blur(35px);
+
+  left: 100%;
+
+  top: 100%;
+
+  transform:
+    translate(10%, 10%)
+    scale(0.3);
+}
+
+/* =========================================================
+   1199px
+========================================================= */
+
+@media screen and (max-width: 1199px) {
+
+  .logo a img {
+    width: 230px;
+  }
+
+  .heading-style-2 {
+    font-size: 40px;
+    line-height: 45px;
+    margin-bottom: 30px;
+  }
+
+  .p {
+    font-size: 17px;
+    line-height: 28px;
+    margin-bottom: 22px;
+  }
+
+  .container {
+    left: calc(50% - (920px / 2));
+
+    padding-block: 80px;
+
+    max-width: 475px;
+  }
+
+  .slider-images > img {
+    width: 453px;
+
+    height: auto;
+
+    aspect-ratio: 1 / 1.3;
+  }
+}
+
+/* =========================================================
+   991px
+========================================================= */
+
+@media screen and (max-width: 991px) {
+
+  .logo a img {
+    width: 210px;
+  }
+
+  .heading-style-2 {
+    font-size: 35px;
+    line-height: 43px;
+    margin-bottom: 22px;
+  }
+
+  .p {
+    font-size: 16px;
+    line-height: 26px;
+    margin-bottom: 18px;
+  }
+
+  .container {
+    left: calc(50% - (720px / 2));
+
+    padding-block: 70px;
+
+    max-width: 405px;
+  }
+
+  .slider-images {
+    width: 45%;
+  }
+
+  .slider-images > img {
+    width: 340px;
+
+    aspect-ratio: 1 / 1.3;
+  }
+}
+
+/* =========================================================
+   767px
+========================================================= */
+
+@media screen and (max-width: 767px) {
+
+  .logo a img {
+    width: 200px;
+  }
+
+  .logo a {
+    margin-bottom: 20px;
+  }
+
+  .slider-main {
+    flex-direction: column;
+
+    min-height: 800px;
+  }
+
+  .social-icons a {
+    width: 35px;
+    height: 35px;
+  }
+
+  .social-icons img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .container {
+    position: unset;
+
+    padding-block: 70px;
+
+    max-width: 540px;
+
+    width: 100%;
+  }
+
+  .slider-images {
+    width: 100%;
+  }
+
+  .slider-images > img {
+    height: 380px;
+
+    aspect-ratio: 1 / 1.3;
+
+    width: auto;
+  }
+
+  .slider-images > img.active {
+    top: 45%;
+    left: 20%;
+  }
+}
+
+/* =========================================================
+   575px
+========================================================= */
+
+@media screen and (max-width: 575px) {
+
+  .logo a img {
+    width: 180px;
+  }
+
+  .logo a {
+    margin-bottom: 18px;
+  }
+
+  .heading-style-2 {
+    font-size: 30px;
+
+    line-height: 40px;
+
+    margin-bottom: 20px;
+  }
+o
+  .p {
+    font-size: 15px;
+
+    line-height: 24px;
+
+    margin-bottom: 16px;
+  }
+
+  .social-icons a {
+    width: 32px;
+    height: 32px;
+  }
+
+  .social-icons img {
+    width: 15px;
+    height: 15px;
+  }
+
+  .container {
+    padding: 50px 20px;
+
+    max-width: 100%;
+  }
+
+  .slider-images > img {
+    height: 100px;
+  }
+
+  .slider-images > img.active {
+    top: 50%;
+    left: 5%;
+  }
+
+  .slider-images > img.previous {
+    top: 100%;
+  }
 }
 </style>

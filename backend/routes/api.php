@@ -51,6 +51,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // User
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [AuthController::class, 'me']);
+
+    Route::put('/updateUser', [AuthController::class, 'updateUser']);
+
 
     // Cart
     Route::get('/cart', [CartController::class, 'index']);
@@ -74,7 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Addresses
     Route::get('/addresses', [AddressController::class, 'index']);
     Route::post('/addresses', [AddressController::class, 'store']);
-    
+
 
     Route::put('/addresses/{address}', [AddressController::class, 'update']);
     Route::delete('/addresses/{address}', [AddressController::class, 'destroy']);

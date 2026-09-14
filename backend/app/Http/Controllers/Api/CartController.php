@@ -10,11 +10,29 @@ class CartController extends Controller
 {
     // Get user cart
     public function index(Request $request)
-    {
-        return Cart::with('product')
-            ->where('user_id', $request->user()->id)
-            ->get();
-    }
+{
+    return Cart::with('product')
+        ->where('user_id', $request->user()->id)
+        ->get()
+        ->map(function ($cart) {
+            return [
+                'id' => $cart->id,
+                'product_id' => $cart->product_id,
+                'quantity' => $cart->quantity,
+
+                'product' => [
+                    'id' => $cart->product->id,
+                    'name' => $cart->product->name,
+                    'price' => $cart->product->price,
+                    'stock' => $cart->product->stock,
+
+                    'image_url' => $cart->product->image
+                        ? asset('storage/' . $cart->product->image)
+                        : null,
+                ],
+            ];
+        });
+}
 
     // Add to cart
     public function store(Request $request)
@@ -24,13 +42,22 @@ class CartController extends Controller
             'quantity' => 'nullable|integer|min:1',
         ]);
 
+        $product = \App\Models\Product::findOrFail($data['product_id']);
+        $quantity = $data['quantity'] ?? 1;
+
+        if ($quantity > $product->stock) {
+            return response()->json([
+                'message' => "Only {$product->stock} units are available.",
+            ], 422);
+        }
+
         $cart = Cart::updateOrCreate(
             [
                 'user_id' => $request->user()->id,
                 'product_id' => $data['product_id'],
             ],
             [
-                'quantity' => $data['quantity'] ?? 1,
+                'quantity' => $quantity,
             ]
         );
 
@@ -57,8 +84,15 @@ public function update(Request $request, $id)
     ]);
 
     $item = Cart::where('id', $id)
-        ->where('user_id', auth()->user()->id)
+        ->where('user_id', $request->user()->id)
+        ->with('product')
         ->firstOrFail();
+
+    if ($request->quantity > $item->product->stock) {
+        return response()->json([
+            'message' => "Only {$item->product->stock} units are available.",
+        ], 422);
+    }
 
     $item->quantity = $request->quantity;
     $item->save();

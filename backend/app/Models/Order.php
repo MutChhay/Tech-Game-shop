@@ -27,9 +27,10 @@ class Order extends Model
     public function canTransitionTo(string $newStatus, bool $isAdmin = false): bool
     {
         $flow = [
-            'pending' => ['processing', 'cancelled'],
-            'processing' => $isAdmin ? ['shipped', 'cancelled'] : ['shipped'],
+            'pending' => $isAdmin ? ['processing', 'cancelled'] : ['cancellation_requested'],
+            'processing' => $isAdmin ? ['shipped', 'cancelled'] : ['cancellation_requested'],
             'shipped' => ['delivered'],
+            'cancellation_requested' => $isAdmin ? ['cancelled'] : [],
         ];
 
         return isset($flow[$this->status]) &&

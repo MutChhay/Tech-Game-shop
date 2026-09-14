@@ -494,7 +494,7 @@ class _AdminEditProductScreenState extends State<AdminEditProductScreen>
                   ),
                 )
               : DropdownButtonFormField<Category>(
-                  value: selectedCategory,
+                  initialValue: selectedCategory,
                   decoration: InputDecoration(
                     prefixIcon: Container(
                       margin: const EdgeInsets.all(12),

@@ -24,7 +24,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final GlobalKey imageKey = GlobalKey();
   final GlobalKey cartKey = GlobalKey();
 
-  // ✅ REAL DATA (not fake)
+  // ✅ REAL DATA 
   final double ratingAvg = 4.3;
   final int ratingCount = 128;
   Map<String, String>? specs;
@@ -105,8 +105,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       "http://10.0.2.2:8000/storage/$img?v=${DateTime.now().millisecondsSinceEpoch}";
 
   Future<void> flyToCart() async {
-    if (imageKey.currentContext == null || cartKey.currentContext == null)
+    if (imageKey.currentContext == null || cartKey.currentContext == null) {
       return;
+    }
 
     final overlay = Overlay.of(context);
     final renderBoxImage =

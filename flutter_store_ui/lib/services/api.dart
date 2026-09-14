@@ -133,7 +133,6 @@ class Api {
     return data.map((e) => Product.fromJson(e)).toList();
   }
 
-
   static Future<void> addProduct({
     required String name,
     required double price,
@@ -173,9 +172,7 @@ class Api {
     }
 
     // ✅ IMAGE (REQUIRED)
-    if (image != null) {
-      request.files.add(await http.MultipartFile.fromPath('image', image.path));
-    }
+    request.files.add(await http.MultipartFile.fromPath('image', image.path));
 
     // 🔥 LAPTOP SPECS FIELDS
     if (cpu != null && cpu.trim().isNotEmpty) {
@@ -522,7 +519,7 @@ class Api {
     }
   }
 
- static Future<List<Address>> getUserAddresses() async {
+  static Future<List<Address>> getUserAddresses() async {
     final response = await http.get(
       Uri.parse('$baseUrl/addresses'),
       headers: await _headers(auth: true),
@@ -542,8 +539,6 @@ class Api {
     return data.map((e) => Address.fromJson(e)).toList();
   }
 
-
-
   // ✅ Add new address
   static Future<void> addAddress(Map<String, dynamic> address) async {
     final headers = await _headers(auth: true); // ✅ AUTH
@@ -561,6 +556,7 @@ class Api {
       throw Exception("Add address failed: ${response.body}");
     }
   }
+
   // ✅ Delete address by ID
   static Future<void> deleteAddress(String id) async {
     final response = await http.delete(
@@ -577,7 +573,7 @@ class Api {
   static Future<void> setDefaultAddress(String id) async {
     final response = await http.post(
       // POST for Laravel route model binding
-      Uri.parse('$baseUrl/addresses/$id/set-default'),
+      Uri.parse('$baseUrl/addresses/$id/default'),
       headers: await _headers(auth: true), // ✅ AUTH
     );
 
@@ -585,5 +581,4 @@ class Api {
       throw Exception("Set default failed: ${response.body}");
     }
   }
-  
 }

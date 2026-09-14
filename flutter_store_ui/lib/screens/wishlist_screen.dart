@@ -250,17 +250,17 @@ class _WishlistScreenState extends State<WishlistScreen>
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                        if (item.product.price != null) ...[
-                          const SizedBox(height: 8),
-                          Text(
-                            "\$${item.product.price!.toStringAsFixed(0)}",
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF8B5CF6),
-                            ),
+                        ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          "\$${item.product.price!.toStringAsFixed(0)}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF8B5CF6),
                           ),
-                        ],
+                        ),
+                      ],
                       ],
                     ),
                   ),

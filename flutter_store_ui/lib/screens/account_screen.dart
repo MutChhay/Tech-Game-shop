@@ -7,6 +7,7 @@ import 'admin/admin_orders_screen.dart';
 import '../../models/address.dart';
 import 'addresses_screen.dart';
 import 'AddaddressesScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -641,11 +642,12 @@ class _AccountScreenState extends State<AccountScreen> {
             );
             if (confirm == true) {
               await Api.logout();
-              if (mounted)
+              if (mounted) {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (_) => const LoginScreen()),
                 );
+              }
             }
           },
           child: const Padding(
@@ -874,7 +876,6 @@ class _AddressesSectionState extends State<AddressesSection> {
   }
 }
 
-
 class AddressCard extends StatelessWidget {
   final Address address;
   final VoidCallback? onDeleted;
@@ -914,6 +915,21 @@ class AddressCard extends StatelessWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            IconButton(
+              tooltip: 'Open in Google Maps',
+              icon: const Icon(Icons.map, color: Colors.green),
+              onPressed: () async {
+                final query =
+                    address.latitude != 0.0 && address.longitude != 0.0
+                    ? '${address.latitude},${address.longitude}'
+                    : '${address.street}, ${address.city}, ${address.state}, ${address.country}';
+                final uri = Uri.https('www.google.com', '/maps/search/', {
+                  'api': '1',
+                  'query': query,
+                });
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              },
+            ),
             IconButton(
               icon: Icon(
                 Icons.star,

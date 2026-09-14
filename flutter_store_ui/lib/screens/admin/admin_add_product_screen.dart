@@ -592,7 +592,7 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen>
                   children: [
                     // 🔥 MAIN DROPDOWN
                     DropdownButtonFormField<Category>(
-                      value: selectedCategories.isEmpty
+                      initialValue: selectedCategories.isEmpty
                           ? null
                           : selectedCategories.first,
                       hint: const Text("Select primary category"),

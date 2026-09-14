@@ -11,7 +11,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return Product::with('category')
+        return Product::with(['category', 'images'])
             ->latest()
             ->get()
             ->map(function ($product) {
@@ -24,9 +24,8 @@ class ProductController extends Controller
                     'image' => $product->image,
                     'category_id' => $product->category_id,
                     'category_name' => $product->category?->name,
-                    'image_url' => $product->image
-                        ? asset('storage/' . $product->image)
-                        : null,
+                    'image_url' => $this->primaryImageUrl($product),
+                    'images' => $this->imageUrls($product),
                     // 🔥 FIXED: Real data instead of validation rules
                     'cpu' => $product->cpu,
                     'ram' => $product->ram,
@@ -39,6 +38,37 @@ class ProductController extends Controller
             });
     }
 
+
+    // show product details
+    public function show($id)
+{
+    $product = Product::with(['category', 'images'])->find($id);
+
+    if (!$product) {
+        return response()->json([
+            'message' => 'Product not found'
+        ], 404);
+    }
+
+    return response()->json([
+        'id' => $product->id,
+        'name' => $product->name,
+        'price' => $product->price,
+        'stock' => $product->stock,
+        'description' => $product->description,
+        'image_url' => $this->primaryImageUrl($product),
+        'images' => $this->imageUrls($product),
+        'category_name' => $product->category?->name,
+        'cpu' => $product->cpu,
+        'ram' => $product->ram,
+        'storage' => $product->storage,
+        'gpu' => $product->gpu,
+        'display' => $product->display,
+        'battery' => $product->battery,
+        'warranty' => $product->warranty,
+    ]);
+}
+
     public function store(Request $request)
     {
     $categoryId = $request->category_id;
@@ -50,6 +80,8 @@ class ProductController extends Controller
         'description' => 'nullable|string',
         'category_id' => 'required|exists:categories,id',
         'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'images' => 'nullable|array|max:7',
+        'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
     ];
 
     // Categories that REQUIRE specs
@@ -79,11 +111,10 @@ class ProductController extends Controller
 
     $data = $request->validate($rules);
 
-    if ($request->hasFile('image')) {
-        $data['image'] = $request->file('image')->store('products', 'public');
-    }
-
     $product = Product::create($data);
+
+    $this->storeProductImages($request, $product);
+    $product->load('images');
 
     return response()->json([
         'success' => true,
@@ -105,6 +136,8 @@ class ProductController extends Controller
                 'description' => 'nullable|string',
                 'category_id' => 'sometimes|required|exists:categories,id',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'images' => 'nullable|array|max:7',
+                'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
             ];
 
             // $specCategories = [1, 2]; // Laptop, PC
@@ -142,10 +175,40 @@ class ProductController extends Controller
 
     $product->update($data);
 
+    if ($request->hasFile('images')) {
+        $files = $request->file('images', []);
+        $files = is_array($files) ? $files : [$files];
+
+        if (count($files) > 7) {
+            return response()->json(['message' => 'A product can have a maximum of 7 images.'], 422);
+        }
+
+        foreach ($product->images as $image) {
+            Storage::disk('public')->delete($image->image_path);
+        }
+        $product->images()->delete();
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+        $product->update(['image' => null]);
+
+        foreach ($files as $file) {
+            $path = $file->store('products', 'public');
+            $product->images()->create([
+                'image_path' => $path,
+                'sort_order' => $product->images()->count(),
+            ]);
+
+            if (!$product->image) {
+                $product->update(['image' => $path]);
+            }
+        }
+    }
+
     return response()->json([
         'success' => true,
         'message' => 'Product updated successfully',
-        'data' => $product->load('category'),
+        'data' => $product->load(['category', 'images']),
     ]);
 }
 
@@ -156,6 +219,10 @@ class ProductController extends Controller
 
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
+        }
+
+        foreach ($product->images as $image) {
+            Storage::disk('public')->delete($image->image_path);
         }
 
         $product->delete();
@@ -175,5 +242,55 @@ class ProductController extends Controller
             'success' => true,
             'message' => 'Product restored successfully'
         ]);
+    }
+
+    private function storeProductImages(Request $request, Product $product): void
+    {
+        $files = $request->file('images', []);
+
+        if ($request->hasFile('image')) {
+            array_unshift($files, $request->file('image'));
+        }
+
+        $nextOrder = (int) $product->images()->max('sort_order') + 1;
+
+        foreach ($files as $file) {
+            $path = $file->store('products', 'public');
+            $product->images()->create([
+                'image_path' => $path,
+                'sort_order' => $nextOrder++,
+            ]);
+
+            if (!$product->image) {
+                $product->update(['image' => $path]);
+            }
+        }
+    }
+
+    private function syncLegacyImage(Product $product): void
+    {
+        if ($product->image && !$product->images()->exists()) {
+            $product->images()->create([
+                'image_path' => $product->image,
+                'sort_order' => 0,
+            ]);
+        }
+    }
+
+    private function primaryImageUrl(Product $product): ?string
+    {
+        $image = $product->images->first()?->image_path ?: $product->image;
+        return $image ? asset('storage/' . $image) : null;
+    }
+
+    private function imageUrls(Product $product): array
+    {
+        $images = $product->images->pluck('image_path')->map(fn ($path) => asset('storage/' . $path))->values()->all();
+
+        if (!$images && $product->image) {
+            $images[] = asset('storage/' . $product->image);
+        }
+
+        return $images;
     }
 }
