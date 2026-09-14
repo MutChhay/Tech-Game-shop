@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import Banner from "./components/Home/Banner.vue";
+import Banner from "./components/Home/banner.vue";
 import ProductList from "./components/views/ProductList.vue";
 
 </script>
