@@ -1,9 +1,9 @@
 <template>
-  <nav class="sticky top-0 z-50 w-full border-b border-black/5 bg-white/95 backdrop-blur-lg px-6 py-2.5 lg:px-12">
+  <nav class="relative sticky top-0 z-50 w-full border-b border-black/5 bg-white/95 px-3 py-2.5 backdrop-blur-lg sm:px-6 lg:px-12">
     <div class="mx-auto flex max-w-7xl items-center justify-between">
       
       <router-link to="/" class="flex items-center group transition-transform active:scale-95">
-        <h1 class="text-xl font-black tracking-[0.15em] uppercase italic text-black">
+        <h1 class="text-base font-black uppercase italic tracking-[0.08em] text-black sm:text-xl sm:tracking-[0.15em]">
           TechStore<span class="text-primary border-b-2 border-primary ml-1 group-hover:text-secondary group-hover:border-secondary transition-colors">Game</span>
         </h1>
       </router-link>
@@ -94,7 +94,20 @@
     </router-link>
   </div>
 
-       <div class="flex items-center gap-4">
+      <button
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-black/10 text-black md:hidden"
+        aria-label="Toggle navigation"
+        :aria-expanded="showMobileMenu"
+        @click="showMobileMenu = !showMobileMenu"
+      >
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path v-if="!showMobileMenu" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+
+      <div class="flex items-center gap-2 sm:gap-4">
 
       <router-link
         id="cart-link"
@@ -132,7 +145,7 @@
           <button
             v-if="!auth.isLoggedIn"
             @click="emit('open-login')"
-            class="group relative px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-sm overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95"
+              class="group relative rounded-xl px-2 py-2 text-xs font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 sm:px-6 sm:py-3 sm:text-sm"
           >
 
             <div
@@ -372,7 +385,7 @@
           </div>
 
         </div>
-              <select v-model="locale">
+              <select v-model="locale" class="w-12 text-xs sm:w-auto sm:text-sm">
                 <option value="en">English</option>
                 <option value="km">ខ្មែរ</option>
               </select>
@@ -380,6 +393,24 @@
        </div>
        
        </div>  
+
+      <div
+        v-if="showMobileMenu"
+        class="absolute inset-x-4 top-full z-[100] rounded-b-xl border border-t-0 border-black/10 bg-white p-3 shadow-xl md:hidden sm:inset-x-6"
+      >
+        <router-link to="/" class="block rounded-lg px-3 py-3 text-sm font-bold uppercase tracking-widest text-black/70" @click="showMobileMenu = false">
+          {{ $t('nav.home') }}
+        </router-link>
+        <router-link to="/products/all" class="block rounded-lg px-3 py-3 text-sm font-bold uppercase tracking-widest text-black/70" @click="showMobileMenu = false">
+          {{ $t('nav.products') }}
+        </router-link>
+        <router-link to="/orders" class="block rounded-lg px-3 py-3 text-sm font-bold uppercase tracking-widest text-black/70" @click="showMobileMenu = false">
+          {{ $t('nav.ordersReturns') }}
+        </router-link>
+        <router-link to="/about" class="block rounded-lg px-3 py-3 text-sm font-bold uppercase tracking-widest text-black/70" @click="showMobileMenu = false">
+          {{ $t('nav.contact') }}
+        </router-link>
+      </div>
 
     </nav>
 </template>
@@ -454,6 +485,7 @@ const logout = () => {
 
 
 const showProducts = ref(false)
+const showMobileMenu = ref(false)
 </script>
 
 

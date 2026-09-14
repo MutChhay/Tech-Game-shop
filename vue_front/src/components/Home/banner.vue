@@ -281,7 +281,7 @@ a {
 .container {
   position: relative;
 
-  left: calc(50% - (1140px / 2));
+  left: max(24px, calc(50% - (1140px / 2)));
 
   width: 50%;
 
@@ -558,7 +558,8 @@ a {
   .slider-main {
     flex-direction: column;
 
-    min-height: 800px;
+    min-height: 0;
+    padding-bottom: 32px;
   }
 
   .social-icons a {
@@ -574,7 +575,7 @@ a {
   .container {
     position: unset;
 
-    padding-block: 70px;
+    padding: 56px 24px 0;
 
     max-width: 540px;
 
@@ -583,10 +584,12 @@ a {
 
   .slider-images {
     width: 100%;
+    height: 360px;
+    min-height: 0;
   }
 
   .slider-images > img {
-    height: 380px;
+    height: min(380px, 72vw);
 
     aspect-ratio: 1 / 1.3;
 
@@ -594,8 +597,8 @@ a {
   }
 
   .slider-images > img.active {
-    top: 45%;
-    left: 20%;
+    top: 50%;
+    left: 50%;
   }
 }
 
@@ -614,13 +617,13 @@ a {
   }
 
   .heading-style-2 {
-    font-size: 30px;
+    font-size: clamp(26px, 8vw, 30px);
 
     line-height: 40px;
 
     margin-bottom: 20px;
   }
-o
+
   .p {
     font-size: 15px;
 
@@ -646,12 +649,12 @@ o
   }
 
   .slider-images > img {
-    height: 100px;
+    height: min(300px, 72vw);
   }
 
   .slider-images > img.active {
     top: 50%;
-    left: 5%;
+    left: 50%;
   }
 
   .slider-images > img.previous {
