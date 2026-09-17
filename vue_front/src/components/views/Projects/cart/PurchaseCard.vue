@@ -275,7 +275,7 @@ function handleOpenLocation() {
     >
       {{
         productStock > 0
-          ?  t('product.istock')
+          ?  t('product.Istock')
           : t('product.Ostock')
       }}
     </p>

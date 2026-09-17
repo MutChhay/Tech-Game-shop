@@ -266,7 +266,7 @@ watch(
 
 <template>
   <main
-    class="min-h-screen bg-gray-50 px-6 py-8 text-gray-900 sm:px-8 lg:px-10"
+    class="min-h-screen bg-gray-50 px-4 py-6 text-gray-900 sm:px-8 sm:py-8 lg:px-10"
   >
     <div class="mx-auto max-w-7xl">
 
@@ -280,7 +280,7 @@ watch(
         <div>
 
           <h1
-            class="text-3xl font-bold uppercase tracking-[0.22em] text-blue-600"
+            class="text-2xl font-bold uppercase tracking-[0.12em] text-blue-600 sm:text-3xl sm:tracking-[0.22em]"
           >
             {{t('Products.OurP')}}
           </h1>
@@ -452,7 +452,7 @@ watch(
           <!-- ================================================= -->
 
           <div
-            class="mb-6 flex items-end justify-between gap-4"
+            class="mb-5 flex items-start justify-between gap-3 sm:mb-6 sm:items-end sm:gap-4"
           >
 
             <div>
@@ -466,7 +466,7 @@ watch(
                 ></div>
 
                 <h2
-                  class="text-2xl font-bold tracking-tight text-gray-900"
+                  class="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl"
                 >
                   {{ categoryName }}
                 </h2>
@@ -482,7 +482,7 @@ watch(
             <!-- all Group Products -->
              <router-link
               :to="getCategoryRoute(categoryName)"
-              class="group inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-blue-600 hover:bg-blue-600 hover:text-white hover:shadow-md"
+              class="group inline-flex shrink-0 items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-700 shadow-sm transition hover:border-blue-600 hover:bg-blue-600 hover:text-white hover:shadow-md sm:px-6 sm:py-3 sm:text-sm"
             >
 
                {{ t('Products.viewMore') }}
@@ -499,7 +499,7 @@ watch(
           <!-- ================================================= -->
 
           <div
-            class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+            class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5"
           >
 
             <router-link
@@ -527,7 +527,7 @@ watch(
                   :src="product.image_url"
                   :alt="product.name"
                   loading="lazy"
-                  class="h-full w-full object-contain p-4 transition duration-300 group-hover:scale-105"
+                  class="h-full w-full object-contain p-2 transition duration-300 group-hover:scale-105 sm:p-4"
                 />
 
                 <div
@@ -562,7 +562,7 @@ watch(
               <!-- =========================================== -->
 
               <div
-                class="flex flex-1 flex-col p-4"
+                class="flex flex-1 flex-col p-3 sm:p-4"
               >
 
                 <!-- Category -->
@@ -603,7 +603,7 @@ watch(
 
                 <!-- Price -->
                 <div
-                  class="mt-4 flex items-end justify-between gap-2"
+                    class="mt-3 flex items-end justify-between gap-2 sm:mt-4"
                 >
 
                   <div>

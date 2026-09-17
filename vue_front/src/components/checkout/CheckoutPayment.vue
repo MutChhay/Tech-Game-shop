@@ -20,5 +20,9 @@ const emit = defineEmits(['update:modelValue'])
       <input :checked="modelValue === 'card'" type="radio" value="card" @change="emit('update:modelValue', 'card')" />
       Card payment
     </label>
+    <label class="mt-3 flex cursor-pointer items-center gap-3 rounded-lg border border-gray-200 p-4 text-sm transition hover:border-gray-400">
+      <input :checked="modelValue === 'card_on_visa_carts'" type="radio" value="card" @change="emit('update:modelValue', 'card_on_visa_carts')" />
+      Visa Card
+    </label>
   </section>
 </template>
